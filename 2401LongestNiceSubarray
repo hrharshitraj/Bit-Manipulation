@@ -1,0 +1,49 @@
+/*
+Hint-
+(1/2)
+What is the maximum possible length of a nice subarray?
+(2/2)
+The length of the longest nice subarray cannot exceed 30. Why is that?
+*/
+
+/* 
+Store the 0th element, check if that and of that element with 1st element is 0;
+If yes then do xor of 0th and 1st element, then go to 2nd element;
+If and of the curr element with already stored xor is not 0, it means contiguous array can't be of more len, then from where you started storing xor's, again do the xor of that element with current xor, then again check if xor remaining is equal to 0 with doing and with the current element and keep repeating the same until you do not reach at n;
+*/
+class Solution {
+    public int longestNiceSubarray(int[] nums) {
+        int n = nums.length;
+        if(n==1) return 1;
+
+        int low = 0;
+        int high = 1;
+        int len = 1;
+        int xor = nums[0];    // If you xor with all subarrays whose and is 0, then you find an element whose and with the xor's of previous element is not 0, then keep un(xor)ing elements until you find and as 0 again, or if not then xor will become 0 when low will be equal to high;
+
+        while(high<n) {
+            int and = xor & nums[high];
+            if(and==0) {
+                xor = xor ^ nums[high];    // If and is 0 with xor & nums[high], subarray is valid, keep going to next element;
+            }
+            else {
+                len = Math.max(len,(high-low));   // If and is != 0, you can't have a greater valid subarray, find length;
+                while(low<high & and!=0) {
+                    xor = xor ^ nums[low];
+                    and = xor & nums[high];    // Check if now, and of xor and current element is 0;
+                    low++;
+                }
+                if(low==high) len = Math.max(len,1);
+                xor = xor ^ nums[high];
+            }
+            high++;
+        }
+        len = Math.max(len,(high-low));    // If subarray consists of last element, you need to check the length after coming out of loop;
+        return len;
+    }
+}
+
+Related Topics-
+Array
+Bit Manipulation
+Sliding Window
