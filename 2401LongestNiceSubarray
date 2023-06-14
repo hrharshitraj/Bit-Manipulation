@@ -1,3 +1,4 @@
+// NOTE: Here, not just remove elements by increasing low, you need to xor with the element which you need to remove;
 /*
 Hint-
 (1/2)
